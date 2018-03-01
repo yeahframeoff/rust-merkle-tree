@@ -19,7 +19,8 @@ struct MerkleNode<T: TreeValue> {
 }
 
 struct MerkleTree<T: TreeValue> {
-    root: MerkleNode<T>
+    root: MerkleNode<T>,
+    leaves: Vec<T>,
 }
 
 fn hash(val: String) -> String {
@@ -58,6 +59,7 @@ where T: TreeValue {
     }
 }
 
+
 fn build_layer<T>(items: Vec<MerkleNode<T>>) -> Vec<MerkleNode<T>>
 where T: TreeValue {
     
@@ -78,17 +80,18 @@ where T: TreeValue {
 impl<T: TreeValue> MerkleTree<T> {
     fn from_leaves<I>(items: I) -> MerkleTree<I::Item>
     where I: IntoIterator,
-          I::Item: TreeValue
+          I::Item: TreeValue + Clone
     {
+        let leaves = items.into_iter().collect::<Vec<_>>();
 
-        let mut layer: Vec<_> = items.into_iter().map(new_leaf).collect();
+        let mut layer: Vec<_> = leaves.iter().cloned().map(new_leaf).collect();
 
         while layer.len() != 1 {
             layer = build_layer(layer);
         }
 
         match layer.pop() { 
-            Some(root) => MerkleTree { root: root },
+            Some(root) => MerkleTree { root, leaves },
             None => panic!("You should have not built an empty tree")
         }
     }
