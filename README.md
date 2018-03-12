@@ -70,3 +70,8 @@ fn test_different_content_produces_different_merkle_root() {
     assert!(tree1.get_root() != tree2.get_root());
 }
 ```
+
+Inspired by following articles and repos:
+- [Quite good implementation in python](https://github.com/jvsteiner/merkletree)
+- Article at wikipedia ([RU](https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D1%80%D0%B5%D0%B2%D0%BE_%D1%85%D0%B5%D1%88%D0%B5%D0%B9)), ([EN](https://en.wikipedia.org/wiki/Merkle_tree))
+- https://impgun.wordpress.com/2015/11/22/merkling-in-ethereum/
