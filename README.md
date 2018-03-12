@@ -34,3 +34,39 @@ The resulting 'layer' of nodes is folded several times.
 On each iteration the new layer of parent nodes is created.
 If a particular layer has odd number of nodes, the last node is propagated to next level *untouched*.
 The iteration repeats until the layer remains with only one node. That node becomes **the root** of the tree. 
+
+The implementation has no methods of expanding the tree (adding new elements) but can be easily adopted to support it.
+The implementation either has no methods of getting an authorization path of a node, but after adding additional fields to node structs (`Weak` references to parent node) it can work.
+
+The example of work is demonstrated in `tests\tests.rs`.
+
+To see tests pass run `$ cargo test`.
+
+Here is the simplified version:
+
+```
+extern crate merkle_tree;
+use merkle_tree::MerkleTree;
+
+
+#[test]
+fn test_equal_content_has_equal_merkle_root() {
+    let content1 = vec!["A", "B", "C"];
+    let content2 = vec!["A", "B", "C"];
+    let tree1 = MerkleTree::<&str>::from_leaves(content1);
+    let tree2 = MerkleTree::<&str>::from_leaves(content2);
+    assert_eq!(tree1.get_root(), tree2.get_root());
+}
+
+
+#[test]
+fn test_different_content_produces_different_merkle_root() {
+    let content1 = vec!["A", "B", "C", "D"];
+
+    let content2 = vec!["A", "B", "C", "E"];
+
+    let tree1 = MerkleTree::<&str>::from_leaves(content1);
+    let tree2 = MerkleTree::<&str>::from_leaves(content2);
+    assert!(tree1.get_root() != tree2.get_root());
+}
+```
