@@ -44,7 +44,7 @@ To see tests pass run `$ cargo test`.
 
 Here is the simplified version:
 
-```
+```rust
 extern crate merkle_tree;
 use merkle_tree::MerkleTree;
 
