@@ -8,6 +8,8 @@ enum MerkleNodePayload<T: ToString> {
     Node (Box<MerkleNode<T>>, Box<MerkleNode<T>>)
 }
 
+use self::MerkleNodePayload::{Leaf, Node};
+
 struct MerkleNode<T: ToString> {
     hash: String,
     payload: MerkleNodePayload<T>
@@ -35,7 +37,7 @@ fn new_leaf<T>(val: T) -> MerkleNode<T>
 where T: ToString {
     MerkleNode {
         hash: hash(val.to_string()),
-        payload: MerkleNodePayload::Leaf(val)
+        payload: Leaf(val)
     }
 }
 
@@ -50,7 +52,7 @@ where T: ToString {
     let concatenated = combine(&left.hash, &right.hash);
     MerkleNode {
         hash: hash(concatenated),
-        payload: MerkleNodePayload::Node(Box::new(left), Box::new(right))
+        payload: Node(Box::new(left), Box::new(right))
     }
 }
 

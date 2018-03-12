@@ -1,6 +1,8 @@
 #![cfg(test)]
 
-use merkletree::MerkleTree;
+extern crate merkle_tree;
+use merkle_tree::MerkleTree;
+
 
 #[test]
 fn test_equal_content_has_equal_merkle_root() {
